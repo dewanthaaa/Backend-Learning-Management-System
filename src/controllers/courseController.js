@@ -2,6 +2,7 @@ import courseModel from "../models/courseModel.js";
 import { mutateCourseSchema } from "../utils/schema.js";
 import categoryModel from "../models/categoryModel.js";
 import fs from "fs";
+import userModel from "../models/userModel.js";
 
 export const getCourses = async (req, res) => {
   try {
@@ -80,5 +81,22 @@ export const postCourse = async (req, res) => {
       },
       { new: true }
     );
-  } catch (error) {}
+
+    await userModel.findByIdAndUpdate(
+      req.user?._id,
+      {
+        $push: {
+          courses: course._id,
+        },
+      },
+      { new: true }
+    );
+
+    return res.json({ message: "Create Course Success" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
 };
