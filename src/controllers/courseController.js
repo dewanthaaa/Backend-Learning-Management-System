@@ -13,7 +13,7 @@ export const getCourses = async (req, res) => {
 
       .select("name thumbnail")
       .populate({
-        path: "categpry",
+        path: "category",
         select: "name -_id",
       })
       .populate({
@@ -21,9 +21,19 @@ export const getCourses = async (req, res) => {
         select: "name",
       });
 
+    const imageUrl = process.env.APP_URL + "/uploads/courses/";
+
+    const responses = courses.map((item) => {
+      return {
+        ...item.toObject(),
+        thumbnail_url: imageUrl + item.thumbnail,
+        total_students: item.students.length,
+      };
+    });
+
     return res.json({
       message: "Get Course Success",
-      data: courses,
+      data: responses,
     });
   } catch (error) {
     console.log(error);
@@ -36,6 +46,8 @@ export const getCourses = async (req, res) => {
 export const postCourse = async (req, res) => {
   try {
     const body = req.body;
+
+    console.log(req.file);
 
     const parse = mutateCourseSchema.safeParse(body);
 
