@@ -52,7 +52,9 @@ export const postCourse = async (req, res) => {
     const parse = mutateCourseSchema.safeParse(body);
 
     if (!parse.success) {
-      const errorMessage = parse.error.issues.map((err) => err.message);
+      const errors = parse.error.issues.map(
+        (err) => `${err.path.join(".") || "(root)"}: ${err.message}`
+      );
 
       if (req?.file?.path && fs.existsSync(req?.file?.path)) {
         fs.unlinkSync(req?.file?.path);
@@ -61,7 +63,7 @@ export const postCourse = async (req, res) => {
       return res.status(500).json({
         message: "Error Validation",
         data: null,
-        errors: errorMessage,
+        errors: errors,
       });
     }
 
@@ -75,7 +77,7 @@ export const postCourse = async (req, res) => {
 
     const course = new courseModel({
       name: parse.data.name,
-      category: parse.category._id,
+      category: category._id,
       description: parse.data.description,
       tagline: parse.data.tagline,
       thumbnail: req.file?.filename,
