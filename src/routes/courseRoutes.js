@@ -1,6 +1,7 @@
 import express from "express";
 import {
   deleteCourse,
+  getCategories,
   getCourses,
   postCourse,
   updateCourse,
@@ -16,6 +17,7 @@ const upload = multer({
 });
 
 courseRoutes.get("/courses", verifyToken, getCourses);
+courseRoutes.get("/categories", verifyToken, getCategories);
 courseRoutes.post(
   "/courses",
   verifyToken,
