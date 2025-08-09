@@ -8,6 +8,7 @@ import {
   updateCourse,
   postContentCourse,
   updateContentCourse,
+  deleteContentCourse,
 } from "../controllers/courseController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 import multer from "multer";
@@ -50,5 +51,6 @@ courseRoutes.put(
   validateRequest(mutateContentSchema),
   updateContentCourse
 );
+courseRoutes.delete("/courses/contents/:id", verifyToken, deleteContentCourse);
 
 export default courseRoutes;
