@@ -50,14 +50,25 @@ export const getCourseById = async (req, res) => {
     const { id } = req.params;
     const { preview } = req.query;
 
-    const course = await courseModel.findById(id).populate({
-      path: "details",
-      select: preview === "true" ? "title type youtubeId text" : "title type",
-    });
+    const course = await courseModel
+      .findById(id)
+      .populate({
+        path: "category",
+        select: "name -_id",
+      })
+      .populate({
+        path: "details",
+        select: preview === "true" ? "title type youtubeId text" : "title type",
+      });
+
+    const imageUrl = process.env.APP_URL + "/uploads/courses/";
 
     return res.json({
       message: "Get Course Detail Success",
-      data: course,
+      data: {
+        ...course.toObject(),
+        thumbnail_url: imageUrl + course.thumbnail,
+      },
     });
   } catch (error) {
     console.log(error);
