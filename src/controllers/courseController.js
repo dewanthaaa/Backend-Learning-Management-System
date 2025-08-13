@@ -332,3 +332,18 @@ export const deleteContentCourse = async (req, res) => {
     });
   }
 };
+
+export const getDetailContent = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const content = await courseDetailModel.findById(id);
+
+    return res.json({ message: "Get Detail Content Success", data: content });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
