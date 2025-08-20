@@ -43,3 +43,8 @@ export const mutateContentSchema = z
       });
     }
   });
+export const mutateStudentSchema = z.object({
+  name: z.string().min(5),
+  email: z.string().min(5),
+  password: z.string().min(5),
+});
