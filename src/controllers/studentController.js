@@ -5,14 +5,25 @@ import fs from "fs";
 
 export const getStudent = async (req, res) => {
   try {
-    const student = await userModel.find({
-      role: "student",
-      manager: req.user._id,
+    const student = await userModel
+      .find({
+        role: "student",
+        manager: req.user._id,
+      })
+      .select("name courses photo");
+
+    const photoUrl = process.env.APP_URL + "/uploads/students/";
+
+    const response = student.map((item) => {
+      return {
+        ...item.toObject(),
+        photo_url: photoUrl + item.photo,
+      };
     });
 
     return res.json({
       message: "Get Student Success",
-      data: student,
+      data: response,
     });
   } catch (error) {
     console.log(error);
