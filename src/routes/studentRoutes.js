@@ -2,6 +2,7 @@ import express from "express";
 import multer from "multer";
 import { verifyToken } from "../middlewares/verifyToken.js";
 import {
+  deleteStudent,
   getStudent,
   postStudent,
   updateStudent,
@@ -28,5 +29,6 @@ studentRoutes.put(
   upload.single("avatar"),
   updateStudent
 );
+studentRoutes.delete("/students/:id", verifyToken, deleteStudent);
 
 export default studentRoutes;
