@@ -59,7 +59,7 @@ export const postStudent = async (req, res) => {
 
     await student.save();
 
-    return res.json({ message: "Create Student Success", data: student });
+    return res.json({ message: "Create Student Success" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
