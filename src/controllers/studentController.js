@@ -138,7 +138,7 @@ export const updateStudent = async (req, res) => {
       name: parse.data.name,
       email: parse.data.email,
       password: hashPassword,
-      photo: req?.file ? req.file?.filename : student.photo,
+      photo: req?.file ? req.file?.filename : student?.photo, //disini bisa jadi salah di masa depan, original dari tutor: student.photo
     });
 
     return res.json({ message: "Update Student Success" });
