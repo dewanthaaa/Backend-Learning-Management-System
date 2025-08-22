@@ -5,7 +5,7 @@ import courseModel from "../models/courseModel.js";
 import path from "path";
 import fs from "fs";
 
-export const getStudent = async (req, res) => {
+export const getStudents = async (req, res) => {
   try {
     const student = await userModel
       .find({
@@ -27,6 +27,21 @@ export const getStudent = async (req, res) => {
       message: "Get Student Success",
       data: response,
     });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const getStudentById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const student = await userModel.findById(id).select("name email");
+
+    return res.json({ message: "Get Detail Student Success", data: student });
   } catch (error) {
     console.log(error);
     return res.status(500).json({

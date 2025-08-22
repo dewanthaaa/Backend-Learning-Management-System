@@ -3,7 +3,8 @@ import multer from "multer";
 import { verifyToken } from "../middlewares/verifyToken.js";
 import {
   deleteStudent,
-  getStudent,
+  getStudents,
+  getStudentById,
   postStudent,
   updateStudent,
 } from "../controllers/studentController.js";
@@ -16,7 +17,7 @@ const upload = multer({
   fileFilter,
 });
 
-studentRoutes.get("/students", verifyToken, getStudent);
+studentRoutes.get("/students", verifyToken, getStudents);
 studentRoutes.post(
   "/students",
   verifyToken,
@@ -30,5 +31,6 @@ studentRoutes.put(
   updateStudent
 );
 studentRoutes.delete("/students/:id", verifyToken, deleteStudent);
+studentRoutes.get("/students/:id", verifyToken, getStudentById);
 
 export default studentRoutes;
