@@ -11,12 +11,14 @@ import {
   deleteContentCourse,
   getDetailContent,
   getStudentByCourseId,
+  postStudentToCourse,
 } from "../controllers/courseController.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 import multer from "multer";
 import { fileStorageCourses, fileFilter } from "../utils/multer.js";
 import { validateRequest } from "../middlewares/validateRequest.js";
 import { mutateContentSchema } from "../utils/schema.js";
+import { addStudentCourseSchema } from "../../../fe-lms/src/utils/zodSchema.js";
 
 const courseRoutes = express.Router();
 const upload = multer({
@@ -57,5 +59,11 @@ courseRoutes.delete("/courses/contents/:id", verifyToken, deleteContentCourse);
 courseRoutes.get("/courses/contents/:id", verifyToken, getDetailContent);
 
 courseRoutes.get("/courses/students/:id", verifyToken, getStudentByCourseId);
+courseRoutes.post(
+  "/courses/students/:id",
+  verifyToken,
+  validateRequest(addStudentCourseSchema),
+  postStudentToCourse
+);
 
 export default courseRoutes;
